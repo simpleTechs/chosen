@@ -26,7 +26,11 @@ $.fn.extend({
 
 class Chosen extends AbstractChosen
 
-  setup: ->
+  constructor: (elmn, data, options) ->
+    @options = $.extend({}, options);
+    this.set_default_values()
+    
+    @form_field = elmn
     @form_field_jq = $ @form_field
     @current_value = @form_field_jq.val()
     @is_rtl = @form_field_jq.hasClass "chzn-rtl"
@@ -482,10 +486,23 @@ class Chosen extends AbstractChosen
       this.result_do_highlight do_high if do_high?
 
   no_results: (terms) ->
-    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+    no_results_html = $('<li class="no-results">No results match "<span></span>". <a href="javascript:void(0);" class="option-add">Add this item</a></li>')
     no_results_html.find("span").first().html(terms)
+    no_results_html.find("a.option-add").bind "click", (evt) => this.select_add_option(terms)
 
     @search_results.append no_results_html
+
+  select_add_option: (terms) ->
+    if $.isFunction(@options.addOption) 
+      @options.addOption(terms);
+    else
+      new_option_html = $('<option />', {value: terms}).text(terms)
+      @form_field_jq.append new_option_html
+      @form_field_jq.trigger "liszt:updated"
+      
+    @search_field.val terms
+    @search_field.trigger "keyup"
+    this.result_select()
 
   no_results_clear: ->
     @search_results.find(".no-results").remove()
@@ -527,6 +544,29 @@ class Chosen extends AbstractChosen
   clear_backstroke: ->
     @pending_backstroke.removeClass "search-choice-focus" if @pending_backstroke
     @pending_backstroke = null
+
+  keyup_checker: (evt) ->
+    stroke = evt.which ? evt.keyCode
+    this.search_field_scale()
+
+    switch stroke
+      when 8
+        if @is_multiple and @backstroke_length < 1 and @choices > 0
+          this.keydown_backstroke()
+        else if not @pending_backstroke
+          this.result_clear_highlight()
+          this.results_search()
+      when 13
+        evt.preventDefault()
+        if this.results_showing
+            this.result_select() 
+        else
+            console.log(this)
+      when 27
+        this.results_hide() if @results_showing
+      when 9, 38, 40, 16
+        # don't do anything on these keys
+      else this.results_search()
 
   keydown_checker: (evt) ->
     stroke = evt.which ? evt.keyCode
