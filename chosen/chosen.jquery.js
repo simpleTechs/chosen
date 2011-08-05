@@ -330,15 +330,14 @@ Copyright (c) 2011 by Harvest
 
     __extends(Chosen, _super);
 
-    function Chosen() {
-      Chosen.__super__.constructor.apply(this, arguments);
-    }
-
-    Chosen.prototype.setup = function() {
+    function Chosen(elmn, data, options) {
+      this.options = $.extend({}, options);
+      this.set_default_values();
+      this.form_field = elmn;
       this.form_field_jq = $(this.form_field);
       this.current_value = this.form_field_jq.val();
-      return this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
-    };
+      this.is_rtl = this.form_field_jq.hasClass("chzn-rtl");
+    }
 
     Chosen.prototype.finish_setup = function() {
       return this.form_field_jq.addClass("chzn-done");
@@ -933,10 +932,51 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.no_results = function(terms) {
-      var no_results_html;
-      no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
+      var no_results_html, option, regex, selected,
+        _this = this;
+      if (this.options.addOption) {
+        no_results_html = $('<li class="no-results">No results match "<span></span>". <a href="javascript:void(0);" class="option-add">Add this item</a></li>');
+      } else {
+        no_results_html = $('<li class="no-results">No results match "<span></span>"</li>');
+      }
       no_results_html.find("span").first().html(terms);
+      regex = new RegExp('^' + terms + '$', 'i');
+      selected = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.results_data;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          option = _ref[_i];
+          if (regex.test(option.value) && option.selected) {
+            _results.push(option);
+          }
+        }
+        return _results;
+      }).call(this);
+      if (selected.length === 0) {
+        no_results_html.append(' <a href="javascript:void(0);" class="option-add">Add this item</a>');
+        no_results_html.find("a.option-add").bind("click", function(evt) {
+          return _this.select_add_option(terms);
+        });
+      }
       return this.search_results.append(no_results_html);
+    };
+
+    Chosen.prototype.select_add_option = function(terms) {
+      var new_option_html;
+      if ($.isFunction(this.options.addOption)) {
+        this.options.addOption(terms);
+      } else {
+        new_option_html = $('<option />', {
+          value: terms
+        }).text(terms);
+        this.form_field_jq.append(new_option_html);
+        this.form_field_jq.trigger("liszt:updated");
+      }
+      this.search_field.val(terms);
+      this.search_field.trigger("keyup");
+      this.form_field_jq.trigger("change");
+      return this.result_select();
     };
 
     Chosen.prototype.no_results_clear = function() {
@@ -1001,6 +1041,40 @@ Copyright (c) 2011 by Harvest
         this.pending_backstroke.removeClass("search-choice-focus");
       }
       return this.pending_backstroke = null;
+    };
+
+    Chosen.prototype.keyup_checker = function(evt) {
+      var stroke, _ref;
+      stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
+      this.search_field_scale();
+      switch (stroke) {
+        case 8:
+          if (this.is_multiple && this.backstroke_length < 1 && this.choices > 0) {
+            return this.keydown_backstroke();
+          } else if (!this.pending_backstroke) {
+            this.result_clear_highlight();
+            return this.results_search();
+          }
+          break;
+        case 13:
+          evt.preventDefault();
+          if (this.results_showing) {
+            return this.result_select();
+          }
+          break;
+        case 27:
+          if (this.results_showing) {
+            return this.results_hide();
+          }
+          break;
+        case 9:
+        case 38:
+        case 40:
+        case 16:
+          break;
+        default:
+          return this.results_search();
+      }
     };
 
     Chosen.prototype.keydown_checker = function(evt) {
