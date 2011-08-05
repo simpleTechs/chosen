@@ -27,7 +27,7 @@ $.fn.extend({
 class Chosen extends AbstractChosen
 
   constructor: (elmn, data, options) ->
-    @options = $.extend({}, options);
+    @options = $.extend({}, options)
     this.set_default_values()
     
     @form_field = elmn
@@ -493,23 +493,24 @@ class Chosen extends AbstractChosen
         no_results_html = $('<li class="no-results">No results match "<span></span>"</li>')
     
     no_results_html.find("span").first().html(terms)
-    no_results_html.find("a.option-add").bind "click", (evt) => this.select_add_option(terms)
+
+    regex = new RegExp('^' + terms + '$', 'i')
+    selected = (option for option in @results_data when regex.test(option.value) and option.selected)
+    if (selected.length == 0)
+      no_results_html.append(' <a href="javascript:void(0);" class="option-add">Add this item</a>')
+      no_results_html.find("a.option-add").bind "click", (evt) => this.select_add_option(terms)
 
     @search_results.append no_results_html
 
   select_add_option: (terms) ->
     if $.isFunction(@options.addOption)
-      @options.addOption.call this, terms, this.select_append_option
+      @options.addOption(terms)
     else
       new_option_html = $('<option />', {value: terms}).text(terms)
-      this.select_append_option( new_option_html )
+      @form_field_jq.append new_option_html
+      @form_field_jq.trigger "liszt:updated"
 
-  
-  select_append_option: (option) ->
-    @form_field_jq.append option
-    terms = @search_field.val()
-    @form_field_jq.trigger "liszt:updated"
-    $(@search_field).val terms
+    @search_field.val terms
     @search_field.trigger "keyup"
     this.form_field_jq.trigger "change"
     this.result_select()
@@ -568,8 +569,10 @@ class Chosen extends AbstractChosen
           this.results_search()
       when 13
         evt.preventDefault()
+
         if this.results_showing
             this.result_select() 
+
       when 27
         this.results_hide() if @results_showing
       when 9, 38, 40, 16
