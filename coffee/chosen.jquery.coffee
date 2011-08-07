@@ -502,11 +502,13 @@ class Chosen extends AbstractChosen
     if $.isFunction(@options.addOption)
       @options.addOption(terms)
     else
-      new_option_html = $('<option />', {value: terms}).text(terms)
-      @form_field_jq.append new_option_html
-      @form_field_jq.trigger "liszt:updated"
+      this.select_append_option( {value: terms, text: terms} )
 
-    @search_field.val terms
+  select_append_option: ( options ) ->
+    option = $('<option />', {value: options.value} ).text( options.text )
+    @form_field_jq.append option
+    @form_field_jq.trigger "liszt:updated"
+    @search_field.val options.text
     @search_field.trigger "keyup"
     this.form_field_jq.trigger "change"
     this.result_select()
