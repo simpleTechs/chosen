@@ -950,17 +950,24 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.select_add_option = function(terms) {
-      var new_option_html;
       if ($.isFunction(this.options.addOption)) {
-        this.options.addOption(terms);
+        return this.options.addOption(terms);
       } else {
-        new_option_html = $('<option />', {
-          value: terms
-        }).text(terms);
-        this.form_field_jq.append(new_option_html);
-        this.form_field_jq.trigger("liszt:updated");
+        return this.select_append_option({
+          value: terms,
+          text: terms
+        });
       }
-      this.search_field.val(terms);
+    };
+
+    Chosen.prototype.select_append_option = function(options) {
+      var option;
+      option = $('<option />', {
+        value: options.value
+      }).text(options.text);
+      this.form_field_jq.append(option);
+      this.form_field_jq.trigger("liszt:updated");
+      this.search_field.val(options.text);
       this.search_field.trigger("keyup");
       this.form_field_jq.trigger("change");
       return this.result_select();
