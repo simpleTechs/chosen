@@ -635,6 +635,6 @@ class Chosen extends AbstractChosen
 root.Chosen = Chosen
 
 get_side_border_padding = (elmt) ->
-  side_border_padding = elmt.outerWidth() - elmt.width()
+	side_border_padding = elmt.outerWidth() - elmt.width()
 
 root.get_side_border_padding = get_side_border_padding
