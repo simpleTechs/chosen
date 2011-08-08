@@ -399,6 +399,7 @@ class Chosen extends AbstractChosen
     regexAnchor = if @search_contains then "" else "^"
     regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
     zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i')
+    exactRegex = new RegExp('^' + searchText + '$', 'i')
 
     for option in @results_data
       if not option.disabled and not option.empty
@@ -437,7 +438,7 @@ class Chosen extends AbstractChosen
             this.result_clear_highlight() if $(result_id) is @result_highlight
             this.result_deactivate $(result_id)
         else if (@is_multiple and option.selected)
-          selected = true if regex.test option.html
+          selected = true if exactRegex.test option.html
 
     if results < 1 and searchText.length
       this.no_results(searchText, selected)
