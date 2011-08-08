@@ -840,7 +840,7 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.winnow_results = function() {
-      var found, option, part, parts, regex, regexAnchor, result_id, results, searchText, selected, startpos, text, zregex, _i, _j, _len, _len1, _ref;
+      var exactRegex, found, option, part, parts, regex, regexAnchor, result_id, results, searchText, selected, startpos, text, zregex, _i, _j, _len, _len1, _ref;
       this.no_results_clear();
       results = 0;
       selected = false;
@@ -848,6 +848,7 @@ Copyright (c) 2011 by Harvest
       regexAnchor = this.search_contains ? "" : "^";
       regex = new RegExp(regexAnchor + searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
       zregex = new RegExp(searchText.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), 'i');
+      exactRegex = new RegExp('^' + searchText + '$', 'i');
       _ref = this.results_data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
@@ -892,7 +893,7 @@ Copyright (c) 2011 by Harvest
               this.result_deactivate($("#" + result_id));
             }
           } else if (this.is_multiple && option.selected) {
-            if (regex.test(option.html)) {
+            if (exactRegex.test(option.html)) {
               selected = true;
             }
           }
