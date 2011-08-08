@@ -8,7 +8,6 @@ $ = jQuery
 $.fn.extend({
   chosen: (options) ->
     ua = navigator.userAgent.toLowerCase();
-
     match = /(msie) ([\w.]+)/.exec( ua ) || [];
     
     browser =
