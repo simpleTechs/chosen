@@ -297,7 +297,6 @@ class Chosen extends AbstractChosen
   search_results_mouseout: (evt) ->
     this.result_clear_highlight() if $(evt.target).hasClass "active-result" or $(evt.target).parents('.active-result').first()
 
-
   choices_click: (evt) ->
     evt.preventDefault()
     if( @active_field and not($(evt.target).hasClass "search-choice" or $(evt.target).parents('.search-choice').first) and not @results_showing )
@@ -505,14 +504,12 @@ class Chosen extends AbstractChosen
       this.select_append_option( {value: terms, text: terms} )
 
   select_append_option: ( options ) ->
-    option = $('<option />', {value: options.value} ).text( options.text )
+    option = $('<option />', options ).attr('selected', 'selected')
     @form_field_jq.append option
     @form_field_jq.trigger "liszt:updated"
-    @search_field.val options.text
-    @search_field.trigger "keyup"
-    this.form_field_jq.trigger "change"
-    this.result_select()
-
+    #@active_field = false
+    @search_field.trigger('focus')
+  
   no_results_clear: ->
     @search_results.find(".no-results").remove()
 

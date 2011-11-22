@@ -963,15 +963,10 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.select_append_option = function(options) {
       var option;
-      option = $('<option />', {
-        value: options.value
-      }).text(options.text);
+      option = $('<option />', options).attr('selected', 'selected');
       this.form_field_jq.append(option);
       this.form_field_jq.trigger("liszt:updated");
-      this.search_field.val(options.text);
-      this.search_field.trigger("keyup");
-      this.form_field_jq.trigger("change");
-      return this.result_select();
+      return this.search_field.trigger('focus');
     };
 
     Chosen.prototype.no_results_clear = function() {
