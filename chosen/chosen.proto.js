@@ -209,6 +209,10 @@ Copyright (c) 2011 by Harvest
       }
     };
 
+    AbstractChosen.prototype.append_option = function(option) {
+      return this.select_append_option(option);
+    };
+
     AbstractChosen.prototype.results_update_field = function() {
       this.set_default_text();
       if (!this.is_multiple) {
@@ -990,7 +994,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.select_create_option = function(terms) {
       if (Object.isFunction(this.create_option)) {
-        return this.create_option.call(this, terms, this.select_append_option);
+        return this.create_option.call(this, terms);
       } else {
         return this.select_append_option({
           value: terms,
