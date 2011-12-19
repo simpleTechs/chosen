@@ -74,7 +74,10 @@ class AbstractChosen
       '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '"'+style+'>' + option.html + '</li>'
     else
       ""
-
+  
+  append_option: (option) ->
+    this.select_append_option(option)
+  
   results_update_field: ->
     this.results_reset_cleanup() if not @is_multiple
     this.result_clear_highlight()
