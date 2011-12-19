@@ -20,8 +20,8 @@ class Chosen extends AbstractChosen
     @multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>')
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>".#{add_item_link}</li>')
-    @new_option_temp = new Template('<option value="#{value}">#{html}</option>')
-    @add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">' + @add_option_text + '</a>')
+    @new_option_temp = new Template('<option value="#{value}">#{text}</option>')
+    @add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">' + @create_option_text + '</a>')
 
 
   set_up_html: ->
@@ -444,17 +444,29 @@ class Chosen extends AbstractChosen
   no_results: (terms, selected) ->
     add_item_link = ''
     
-    if @add_option and not selected
+    if @create_option and not selected
       add_item_link = @add_link_temp.evaluate( )
       
     @search_results.insert @no_results_temp.evaluate( terms: terms, add_item_link: add_item_link )
     
-    if @options.addOption and not selected
-      @search_results.down("a.option-add").observe "click", (evt) => this.select_add_option(terms) unless selected
+    if @create_option and not selected
+      @search_results.down("a.option-add").observe "click", (evt) => this.select_create_option(terms) unless selected
+      
+    ###  
+      
+    no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+    no_results_html.find("span").first().html(terms)
+    
+    @search_results.append no_results_html
+    
+    if @create_option #and not selected
+      this.show_create_option( terms )
+      
+    ###
 
-  select_add_option: ( terms ) ->
-    if Object.isFunction(@add_option)
-      @add_option.call this, terms, this.select_append_option
+  select_create_option: ( terms ) ->
+    if Object.isFunction( @create_option )
+      @create_option.call this, terms, this.select_append_option
     else
       this.select_append_option {value: terms, text: terms}
 
@@ -465,6 +477,7 @@ class Chosen extends AbstractChosen
     ###
     
     option = @new_option_temp.evaluate( options )
+    console.log(option)
     @form_field.insert option
     Event.fire @form_field, "liszt:updated"
     this.result_select()
