@@ -1306,7 +1306,16 @@
     _results = [];
     for (_i = 0, _len = selects.length; _i < _len; _i++) {
       select = selects[_i];
-      _results.push(new Chosen(select,{create_option: true}));
+      _results.push(new Chosen(select,{
+        create_option: function(term){
+          var chosen = this;
+          chosen.append_option({
+            value: term,
+            text: term
+          });
+        },
+        persistent_create_option: false
+      }));
     }
     deselects = $$(".chzn-select-deselect");
     for (_i = 0, _len = deselects.length; _i < _len; _i++) {

@@ -466,7 +466,7 @@ class Chosen extends AbstractChosen
 
   select_create_option: ( terms ) ->
     if Object.isFunction( @create_option )
-      @create_option.call this, terms, this.select_append_option
+      @create_option.call this, terms
     else
       this.select_append_option {value: terms, text: terms}
 
@@ -477,7 +477,6 @@ class Chosen extends AbstractChosen
     ###
     
     option = @new_option_temp.evaluate( options )
-    console.log(option)
     @form_field.insert option
     Event.fire @form_field, "liszt:updated"
     this.result_select()

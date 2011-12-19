@@ -161,6 +161,9 @@
         return "";
       }
     };
+    AbstractChosen.prototype.append_option = function(option) {
+      return this.select_append_option(option);
+    };
     AbstractChosen.prototype.results_update_field = function() {
       this.result_clear_highlight();
       this.result_single_selected = null;
@@ -806,7 +809,7 @@
     };
     Chosen.prototype.select_create_option = function(terms) {
       if (Object.isFunction(this.create_option)) {
-        return this.create_option.call(this, terms, this.select_append_option);
+        return this.create_option.call(this, terms);
       } else {
         return this.select_append_option({
           value: terms,
@@ -819,7 +822,6 @@
             TODO Close options after adding
           */      var option;
       option = this.new_option_temp.evaluate(options);
-      console.log(option);
       this.form_field.insert(option);
       Event.fire(this.form_field, "liszt:updated");
       return this.result_select();

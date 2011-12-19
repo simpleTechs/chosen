@@ -488,7 +488,7 @@ class Chosen extends AbstractChosen
     
   select_create_option: (terms) ->
     if $.isFunction(@create_option)
-      @create_option.call this, terms, this.select_append_option
+      @create_option.call this, terms
     else
       this.select_append_option {value: terms, text: terms}
 
