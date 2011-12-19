@@ -333,7 +333,7 @@ Copyright (c) 2011 by Harvest
       this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>".#{add_item_link}</li>');
       this.new_option_temp = new Template('<option value="#{value}">#{text}</option>');
-      return this.add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">#{text}</a>');
+      return this.add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">' + this.create_option_text + '</a>');
     };
 
     Chosen.prototype.set_up_html = function() {
@@ -960,28 +960,37 @@ Copyright (c) 2011 by Harvest
         _this = this;
 
       add_item_link = '';
-      if (this.options.addOption && !selected) {
-        add_item_link = this.add_link_temp.evaluate({
-          text: this.options.addOptionText
-        });
+      if (this.create_option && !selected) {
+        add_item_link = this.add_link_temp.evaluate();
       }
       this.search_results.insert(this.no_results_temp.evaluate({
         text: this.options.noResultsText,
         terms: terms,
         add_item_link: add_item_link
       }));
-      if (this.options.addOption && !selected) {
+      if (this.create_option && !selected) {
         return this.search_results.down("a.option-add").observe("click", function(evt) {
           if (!selected) {
-            return _this.select_add_option(terms);
+            return _this.select_create_option(terms);
           }
         });
       }
+      /*  
+        
+      no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
+      no_results_html.find("span").first().html(terms)
+      
+      @search_results.append no_results_html
+      
+      if @create_option #and not selected
+        this.show_create_option( terms )
+      */
+
     };
 
-    Chosen.prototype.select_add_option = function(terms) {
-      if (Object.isFunction(this.options.addOption)) {
-        return this.options.addOption.call(this, terms, this.select_append_option);
+    Chosen.prototype.select_create_option = function(terms) {
+      if (Object.isFunction(this.create_option)) {
+        return this.create_option.call(this, terms, this.select_append_option);
       } else {
         return this.select_append_option({
           value: terms,
@@ -997,10 +1006,7 @@ Copyright (c) 2011 by Harvest
 
       var option;
 
-      option = this.new_option_temp.evaluate({
-        value: options.value,
-        text: options.text
-      });
+      option = this.new_option_temp.evaluate(options);
       this.form_field.insert(option);
       Event.fire(this.form_field, "liszt:updated");
       return this.result_select();
