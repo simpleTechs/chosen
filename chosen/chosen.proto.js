@@ -246,7 +246,7 @@ Copyright (c) 2011 by Harvest
 
     AbstractChosen.prototype.generate_random_char = function() {
       var chars, newchar, rand;
-      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZ";
+      chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       rand = Math.floor(Math.random() * chars.length);
       return newchar = chars.substring(rand, rand + 1);
     };
@@ -299,7 +299,7 @@ Copyright (c) 2011 by Harvest
 
     Chosen.prototype.set_up_html = function() {
       var base_template, container_props, dd_top, dd_width, sf_width;
-      this.container_id = this.form_field.identify().replace(/(:|\.)/g, '_') + "_chzn";
+      this.container_id = this.form_field.identify().replace(/[^\w]/g, '_') + "_chzn";
       this.f_width = this.form_field.getStyle("width") ? parseInt(this.form_field.getStyle("width"), 10) : this.form_field.getWidth();
       container_props = {
         'id': this.container_id,
