@@ -22,7 +22,7 @@ class Chosen extends AbstractChosen
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @no_results_temp = new Template('<li class="no-results">#{text} "<span>#{terms}</span>"</li>')
     @new_option_temp = new Template('<option value="#{value}">#{text}</option>')
-    @create_option_temp = new Template('<li class="create-option"><a href="javascript:void(0);">#{text}</a>: #{terms}</li>')
+    @create_option_temp = new Template('<li class="create-option active-result"><a href="javascript:void(0);">#{text}</a>: #{terms}</li>')
 
 
   set_up_html: ->
@@ -331,6 +331,11 @@ class Chosen extends AbstractChosen
   result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
+      
+      if high.hasClassName 'create-option'
+        this.select_create_option(@search_field.value)
+        return this.results_hide()
+      
       this.result_clear_highlight()
 
       if @is_multiple
@@ -495,6 +500,7 @@ class Chosen extends AbstractChosen
 
   keydown_arrow: ->
     actives = @search_results.select("li.active-result")
+    console.log actives
     if actives.length
       if not @result_highlight
         this.result_do_highlight actives.first()

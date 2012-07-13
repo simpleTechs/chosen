@@ -324,7 +324,7 @@ Copyright (c) 2011 by Harvest
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       this.no_results_temp = new Template('<li class="no-results">#{text} "<span>#{terms}</span>"</li>');
       this.new_option_temp = new Template('<option value="#{value}">#{text}</option>');
-      return this.create_option_temp = new Template('<li class="create-option"><a href="javascript:void(0);">#{text}</a>: #{terms}</li>');
+      return this.create_option_temp = new Template('<li class="create-option active-result"><a href="javascript:void(0);">#{text}</a>: #{terms}</li>');
     };
 
     Chosen.prototype.set_up_html = function() {
@@ -750,6 +750,10 @@ Copyright (c) 2011 by Harvest
       var high, item, position;
       if (this.result_highlight) {
         high = this.result_highlight;
+        if (high.hasClassName('create-option')) {
+          this.select_create_option(this.search_field.value);
+          return this.results_hide();
+        }
         this.result_clear_highlight();
         if (this.is_multiple) {
           this.result_deactivate(high);
@@ -980,6 +984,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.keydown_arrow = function() {
       var actives, nexts, sibs;
       actives = this.search_results.select("li.active-result");
+      console.log(actives);
       if (actives.length) {
         if (!this.result_highlight) {
           this.result_do_highlight(actives.first());
