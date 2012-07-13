@@ -773,6 +773,10 @@ Copyright (c) 2011 by Harvest
       var high, high_id, item, position;
       if (this.result_highlight) {
         high = this.result_highlight;
+        if (high.hasClass('create-option')) {
+          this.select_create_option(this.search_field.val());
+          return this.results_hide();
+        }
         high_id = high.attr("id");
         this.result_clear_highlight();
         if (this.is_multiple) {
@@ -957,7 +961,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.show_create_option = function(terms) {
       var create_option_html,
         _this = this;
-      create_option_html = $('<li class="create-option"><a href="javascript:void(0);">' + this.create_option_text + '</a>: "' + terms + '"</li>').bind("click", function(evt) {
+      create_option_html = $('<li class="create-option active-result"><a href="javascript:void(0);">' + this.create_option_text + '</a>: "' + terms + '"</li>').bind("click", function(evt) {
         return _this.select_create_option(terms);
       });
       return this.search_results.append(create_option_html);
