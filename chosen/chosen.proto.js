@@ -322,9 +322,9 @@ Copyright (c) 2011 by Harvest
       this.single_temp = new Template('<a href="javascript:void(0)" class="chzn-single chzn-default"><span>#{default}</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       this.multi_temp = new Template('<ul class="chzn-choices"><li class="search-field"><input type="text" value="#{default}" class="default" autocomplete="off" style="width:25px;" /></li></ul><div class="chzn-drop" style="left:-9000px;"><ul class="chzn-results"></ul></div>');
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
-      this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>".#{add_item_link}</li>');
+      this.no_results_temp = new Template('<li class="no-results">#{text} "<span>#{terms}</span>"</li>');
       this.new_option_temp = new Template('<option value="#{value}">#{text}</option>');
-      return this.add_link_temp = new Template(' <a href="javascript:void(0);" class="option-add">' + this.create_option_text + '</a>');
+      return this.create_option_temp = new Template('<li class="create-option"><a href="javascript:void(0);">#{text}</a>: #{terms}</li>');
     };
 
     Chosen.prototype.set_up_html = function() {
@@ -817,6 +817,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.winnow_results = function() {
       var found, option, part, parts, regex, regexAnchor, result_id, results, searchText, startpos, text, zregex, _i, _j, _len, _len1, _ref;
       this.no_results_clear();
+      this.create_option_clear();
       results = 0;
       searchText = this.search_field.value === this.default_text ? "" : this.search_field.value.strip().escapeHTML();
       regexAnchor = this.search_contains ? "" : "^";
@@ -912,35 +913,39 @@ Copyright (c) 2011 by Harvest
       }
     };
 
-    Chosen.prototype.no_results = function(terms, selected) {
-      var add_item_link,
-        _this = this;
-      add_item_link = '';
-      if (this.create_option && !selected) {
-        add_item_link = this.add_link_temp.evaluate();
-      }
-      this.search_results.insert(this.no_results_temp.evaluate({
+    Chosen.prototype.no_results = function(terms) {
+      var no_results_html;
+      no_results_html = this.no_results_temp.evaluate({
         terms: terms,
-        add_item_link: add_item_link
-      }));
-      if (this.create_option && !selected) {
-        return this.search_results.down("a.option-add").observe("click", function(evt) {
-          if (!selected) {
-            return _this.select_create_option(terms);
-          }
-        });
+        text: this.results_none_found
+      });
+      this.search_results.insert(no_results_html);
+      if (this.create_option) {
+        return this.show_create_option(terms);
       }
-      /*  
-        
-      no_results_html = $('<li class="no-results">' + @results_none_found + ' "<span></span>"</li>')
-      no_results_html.find("span").first().html(terms)
-      
-      @search_results.append no_results_html
-      
-      if @create_option #and not selected
-        this.show_create_option( terms )
-      */
+    };
 
+    Chosen.prototype.show_create_option = function(terms) {
+      var create_option_html,
+        _this = this;
+      create_option_html = this.create_option_temp.evaluate({
+        terms: terms,
+        text: this.create_option_text
+      });
+      this.search_results.insert(create_option_html);
+      return this.search_results.down(".create-option").observe("click", function(evt) {
+        return _this.select_create_option(terms);
+      });
+    };
+
+    Chosen.prototype.create_option_clear = function() {
+      var co, _results;
+      co = null;
+      _results = [];
+      while (co = this.search_results.down(".create-option")) {
+        _results.push(co.remove());
+      }
+      return _results;
     };
 
     Chosen.prototype.select_create_option = function(terms) {
@@ -955,10 +960,6 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.select_append_option = function(options) {
-      /*
-            TODO Close options after adding
-      */
-
       var option;
       option = this.new_option_temp.evaluate(options);
       this.form_field.insert(option);

@@ -307,7 +307,7 @@
       </div>
       <div>
         <em>Into This</em>        
-        <select data-placeholder="Choose a Country..." class="chzn-select" style="width:350px;" tabindex="2">
+        <select data-placeholder="Choose a Country..." class="chzn-select-create-option" style="width:350px;" tabindex="2">
           <option value=""></option> 
           <option value="United States">United States</option> 
           <option value="United Kingdom">United Kingdom</option> 
@@ -1318,21 +1318,26 @@
     _results = [];
     for (_i = 0, _len = selects.length; _i < _len; _i++) {
       select = selects[_i];
-      _results.push(new Chosen(select,{
+      _results.push(new Chosen(select));
+    }
+    selects = $$(".chzn-select-deselect");
+    for (_i = 0, _len = selects.length; _i < _len; _i++) {
+      select = selects[_i];
+      _results.push(new Chosen(select,{allow_single_deselect:true}));
+    }
+    selects = $$(".chzn-select-create-option");
+    _results = [];
+    for (_i = 0, _len = selects.length; _i < _len; _i++) {
+      select = selects[_i];
+      _results.push(new Chosen(select, {
         create_option: function(term){
-          var chosen = this;
-          chosen.append_option({
+          this.append_option({
             value: term,
             text: term
           });
         },
         persistent_create_option: false
       }));
-    }
-    deselects = $$(".chzn-select-deselect");
-    for (_i = 0, _len = deselects.length; _i < _len; _i++) {
-      select = deselects[_i];
-      _results.push(new Chosen(select,{allow_single_deselect:true}));
     }
     return _results;
   });
