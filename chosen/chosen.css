@@ -17,7 +17,7 @@
   -moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
   -o-box-shadow     : 0 4px 5px rgba(0,0,0,.15);
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
-  z-index: 999;
+  z-index: 1010;
 }
 /* @end */
 
@@ -75,6 +75,9 @@
 }
 .chzn-container-single .chzn-single abbr:hover {
   background-position: right -11px;
+}
+.chzn-container-single.chzn-disabled .chzn-single abbr:hover {
+  background-position: right top;
 }
 .chzn-container-single .chzn-single div {
   position: absolute;
@@ -227,6 +230,7 @@
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .chzn-container-multi .chzn-results {
   margin: -1px 0 0;
