@@ -429,9 +429,8 @@ class Chosen extends AbstractChosen
             else
               text = option.html
 
-            $(result_id).update text if $(result_id).innerHTML != text
-
-            this.result_activate $(result_id)
+            result.update text if result.innerHTML != text
+            this.result_activate result
 
             $(@results_data[option.group_array_index].dom_id).setStyle({display: 'list-item'}) if option.group_array_index?
           else
@@ -443,6 +442,7 @@ class Chosen extends AbstractChosen
     if results < 1 and searchText.length
       this.no_results(searchText, selected)
     else
+      this.show_create_option( searchText ) if @create_option and not exact_result and @persistent_create_option and searchText.length
       this.winnow_results_set_highlight()
 
   winnow_results_clear: ->

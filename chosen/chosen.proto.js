@@ -875,10 +875,10 @@ Copyright (c) 2011 by Harvest
               } else {
                 text = option.html;
               }
-              if ($(result_id).innerHTML !== text) {
-                $(result_id).update(text);
+              if (result.innerHTML !== text) {
+                result.update(text);
               }
-              this.result_activate($(result_id));
+              this.result_activate(result);
               if (option.group_array_index != null) {
                 $(this.results_data[option.group_array_index].dom_id).setStyle({
                   display: 'list-item'
@@ -900,6 +900,9 @@ Copyright (c) 2011 by Harvest
       if (results < 1 && searchText.length) {
         return this.no_results(searchText, selected);
       } else {
+        if (this.create_option && !exact_result && this.persistent_create_option && searchText.length) {
+          this.show_create_option(searchText);
+        }
         return this.winnow_results_set_highlight();
       }
     };
