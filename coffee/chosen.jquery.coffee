@@ -219,6 +219,11 @@ class Chosen extends AbstractChosen
     else
       ""
 
+  results_update_field: ->
+    this.result_clear_highlight()
+    @result_single_selected = null
+    this.results_build()
+
   result_do_highlight: (el) ->
     if el.length
       this.result_clear_highlight()
