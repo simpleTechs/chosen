@@ -569,12 +569,6 @@ Copyright (c) 2011 by Harvest
       }
     };
 
-    Chosen.prototype.results_update_field = function() {
-      this.result_clear_highlight();
-      this.result_single_selected = null;
-      return this.results_build();
-    };
-
     Chosen.prototype.result_do_highlight = function(el) {
       var high_bottom, high_top, maxHeight, visible_bottom, visible_top;
       if (el.length) {

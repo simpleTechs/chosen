@@ -205,11 +205,6 @@ class Chosen extends AbstractChosen
     else
       ""
 
-  results_update_field: ->
-    this.result_clear_highlight()
-    @result_single_selected = null
-    this.results_build()
-
   result_do_highlight: (el) ->
     if el.length
       this.result_clear_highlight()
@@ -339,7 +334,7 @@ class Chosen extends AbstractChosen
   result_select: (evt) ->
     if @result_highlight
       high = @result_highlight
-      
+
       if high.hasClass 'create-option'
         this.select_create_option(@search_field.val())
         return this.results_hide()
@@ -485,7 +480,7 @@ class Chosen extends AbstractChosen
     no_results_html.find("span").first().html(terms)
     
     @search_results.append no_results_html
-    
+ 
     if @create_option #and not selected
       this.show_create_option( terms )
 
