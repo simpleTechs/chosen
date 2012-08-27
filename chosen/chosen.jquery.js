@@ -569,23 +569,6 @@ Copyright (c) 2011 by Harvest
       }
     };
 
-    Chosen.prototype.result_add_option = function(option) {
-      var classes;
-      if (!option.disabled) {
-        option.dom_id = this.container_id + "_o_" + option.array_index;
-        classes = option.selected && this.is_multiple ? [] : ["active-result"];
-        if (option.selected) {
-          classes.push("result-selected");
-        }
-        if (option.group_array_index != null) {
-          classes.push("group-option");
-        }
-        return '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>';
-      } else {
-        return "";
-      }
-    };
-
     Chosen.prototype.results_update_field = function() {
       this.result_clear_highlight();
       this.result_single_selected = null;

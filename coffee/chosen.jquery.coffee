@@ -205,18 +205,6 @@ class Chosen extends AbstractChosen
     else
       ""
 
-  result_add_option: (option) ->
-    if not option.disabled
-      option.dom_id = @container_id + "_o_" + option.array_index
-
-      classes = if option.selected and @is_multiple then [] else ["active-result"]
-      classes.push "result-selected" if option.selected
-      classes.push "group-option" if option.group_array_index?
-
-      '<li id="' + option.dom_id + '" class="' + classes.join(' ') + '">' + option.html + '</li>'
-    else
-      ""
-
   results_update_field: ->
     this.result_clear_highlight()
     @result_single_selected = null
