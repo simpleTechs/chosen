@@ -967,10 +967,7 @@ Copyright (c) 2011 by Harvest
     Chosen.prototype.show_create_option = function(terms) {
       var create_option_html,
         _this = this;
-      create_option_html = $('<li class="create-option active-result"><a href="javascript:void(0);">' + this.create_option_text + '</a>: "' + terms + '"</li>').bind("click", function(evt) {
-        return _this.select_create_option(terms);
-      });
-      return this.search_results.append(create_option_html);
+      create_option_html = $('<li class="create-option active-result"><a href="javascript:void(0);">' + this.create_option_text + '</a>: "' + terms + '"</li>');      return this.search_results.append(create_option_html);
     };
 
     Chosen.prototype.create_option_clear = function() {
