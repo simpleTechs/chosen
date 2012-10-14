@@ -138,8 +138,6 @@ Copyright (c) 2011 by Harvest
       this.single_backstroke_delete = this.options.single_backstroke_delete || false;
       this.max_selected_options = this.options.max_selected_options || Infinity;
       this.create_option = this.options.create_option || false;
-      this.create_allow_duplicates = this.options.create_allow_duplicates || false;
-  		this.create_case_insensitive = this.options.create_case_insensitive || false;
       return this.persistent_create_option = this.options.persistent_create_option || false;
     };
 
@@ -947,32 +945,14 @@ Copyright (c) 2011 by Harvest
       no_results_html.find("span").first().html(terms);
       this.search_results.append(no_results_html);
       if (this.create_option) {
-  			if (!this.create_allow_duplicates) {
-					var found = false;
-					if (!this.create_case_insensitive) {
-						var txt = this.form_field_jq.find('option:contains('+ terms + ')').text();
-						found = txt == terms;
-					} else {
-						terms = terms.toLowerCase();
-						this.form_field_jq.find('option:selected').each(function(i) {
-							if ($(this).text().toLowerCase() == terms) {
-								found = true;
-								return false;
-							}
-						});
-					}
-					if ( found ) {
-						return false;
-					}
-				}
-				return this.show_create_option(terms);
-			}
+        return this.show_create_option(terms);
+      }
     };
 
     Chosen.prototype.show_create_option = function(terms) {
-      var create_option_html,
-        _this = this;
-      create_option_html = $('<li class="create-option active-result"><a href="javascript:void(0);">' + this.create_option_text + '</a>: "' + terms + '"</li>');      return this.search_results.append(create_option_html);
+      var create_option_html;
+      create_option_html = $('<li class="create-option active-result"><a href="javascript:void(0);">' + this.create_option_text + '</a>: "' + terms + '"</li>');
+      return this.search_results.append(create_option_html);
     };
 
     Chosen.prototype.create_option_clear = function() {
