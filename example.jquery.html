@@ -1,5 +1,5 @@
 <!doctype html> 
-<html lang="en" class="no-js"> 
+<html lang="en"> 
 <head>
   <style>
     /* RESET */
@@ -48,23 +48,6 @@
     }
   </style>
   <link rel="stylesheet" href="chosen/chosen.css" />
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
-  <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript">
-  $(function(){
-    $(".chzn-select").chosen({
-      noResultsText: 'Geen resultaten voor',
-      addOptionText: 'Toevoegen',
-      selectOptionText: 'Selecteer een optie',
-      selectOptionsText: 'Selecteer opties',
-      addOption: function(term, callback){
-        callback.call(this, {value: 'value='+term, text: term});
-      }
-    });
-  });
-  </script>
-
 </head>
 <body>
   <form>
@@ -314,6 +297,8 @@
           <option value="Uganda">Uganda</option> 
           <option value="Ukraine">Ukraine</option> 
           <option value="United Arab Emirates">United Arab Emirates</option> 
+          <option value="United Kingdom">United Kingdom</option> 
+          <option value="United States">United States</option> 
           <option value="United States Minor Outlying Islands">United States Minor Outlying Islands</option> 
           <option value="Uruguay">Uruguay</option> 
           <option value="Uzbekistan">Uzbekistan</option> 
@@ -331,7 +316,7 @@
       </div>
       <div>
         <em>Into This</em>        
-        <select data-placeholder="Choose a Country..." class="chzn-select-create-option" style="width:350px;" tabindex="2">
+        <select data-placeholder="Choose a Country..." class="chzn-select" style="width:350px;" tabindex="2">
           <option value=""></option> 
           <option value="United States">United States</option> 
           <option value="United Kingdom">United Kingdom</option> 
@@ -569,6 +554,8 @@
           <option value="Uganda">Uganda</option> 
           <option value="Ukraine">Ukraine</option> 
           <option value="United Arab Emirates">United Arab Emirates</option> 
+          <option value="United Kingdom">United Kingdom</option> 
+          <option value="United States">United States</option> 
           <option value="United States Minor Outlying Islands">United States Minor Outlying Islands</option> 
           <option value="Uruguay">Uruguay</option> 
           <option value="Uzbekistan">Uzbekistan</option> 
@@ -828,6 +815,8 @@
           <option value="Uganda">Uganda</option> 
           <option value="Ukraine">Ukraine</option> 
           <option value="United Arab Emirates">United Arab Emirates</option> 
+          <option value="United Kingdom">United Kingdom</option> 
+          <option value="United States">United States</option> 
           <option value="United States Minor Outlying Islands">United States Minor Outlying Islands</option> 
           <option value="Uruguay">Uruguay</option> 
           <option value="Uzbekistan">Uzbekistan</option> 
@@ -1083,6 +1072,8 @@
           <option value="Uganda">Uganda</option> 
           <option value="Ukraine">Ukraine</option> 
           <option value="United Arab Emirates">United Arab Emirates</option> 
+          <option value="United Kingdom">United Kingdom</option> 
+          <option value="United States">United States</option> 
           <option value="United States Minor Outlying Islands">United States Minor Outlying Islands</option> 
           <option value="Uruguay">Uruguay</option> 
           <option value="Uzbekistan">Uzbekistan</option> 
@@ -1369,20 +1360,7 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
   <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
-  <script type="text/javascript">
-    $(".chzn-select").chosen();
-    $(".chzn-select-deselect").chosen({allow_single_deselect:true});
-    $(".chzn-select-create-option").chosen({
-      create_option: function(term){
-        var chosen = this;
-        chosen.append_option({
-          value: term,
-          text: term
-        });
-      },
-      persistent_create_option: false
-    });
-  </script>
+  <script type="text/javascript"> $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true}); </script>
   </form>
 </body>
 </html>
