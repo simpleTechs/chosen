@@ -22,7 +22,7 @@ class Chosen extends AbstractChosen
     @choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>')
     @choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>')
     @no_results_temp = new Template('<li class="no-results">' + @results_none_found + ' "<span>#{terms}</span>"</li>')
-    @new_option_temp = new Template('<option value="#{value}">#{text}</option>')
+    @new_option_temp = new Template('<option value="#{value}" selected="selected">#{text}</option>')
     @create_option_temp = new Template('<li class="create-option active-result"><a href="javascript:void(0);">#{text}</a>: "#{terms}"</li>')
 
   set_up_html: ->
@@ -488,17 +488,16 @@ class Chosen extends AbstractChosen
     create_option.each (el) ->
       el.remove()
 
-  select_create_option: ( terms ) ->
-    if Object.isFunction( @create_option )
+  select_create_option: (terms) ->
+    if Object.isFunction(@create_option)
       @create_option.call this, terms
     else
-      this.select_append_option( {value: terms, text: terms} )
+      this.select_append_option( value: terms, text: terms )
 
-  select_append_option: ( options ) ->
-    option = @new_option_temp.evaluate( options )
+  select_append_option: (options) ->
+    option = @new_option_temp.evaluate(options)
     @form_field.insert option
     Event.fire @form_field, "liszt:updated"
-    this.result_select()
 
   no_results_clear: ->
     nr = null

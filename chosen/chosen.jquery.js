@@ -1009,12 +1009,14 @@ Copyright (c) 2011 by Harvest
     };
 
     Chosen.prototype.select_append_option = function(options) {
-      var option;
+      var attributes, option;
 
-      option = $('<option />', options).attr('selected', 'selected');
+      attributes = $.extend({}, options, {
+        selected: 1
+      });
+      option = $('<option />', attributes);
       this.form_field_jq.append(option);
-      this.form_field_jq.trigger("liszt:updated");
-      return this.search_field.trigger('focus');
+      return this.form_field_jq.trigger("liszt:updated");
     };
 
     Chosen.prototype.no_results_clear = function() {

@@ -339,7 +339,7 @@ Copyright (c) 2011 by Harvest
       this.choice_temp = new Template('<li class="search-choice" id="#{id}"><span>#{choice}</span><a href="javascript:void(0)" class="search-choice-close" rel="#{position}"></a></li>');
       this.choice_noclose_temp = new Template('<li class="search-choice search-choice-disabled" id="#{id}"><span>#{choice}</span></li>');
       this.no_results_temp = new Template('<li class="no-results">' + this.results_none_found + ' "<span>#{terms}</span>"</li>');
-      this.new_option_temp = new Template('<option value="#{value}">#{text}</option>');
+      this.new_option_temp = new Template('<option value="#{value}" selected="selected">#{text}</option>');
       return this.create_option_temp = new Template('<li class="create-option active-result"><a href="javascript:void(0);">#{text}</a>: "#{terms}"</li>');
     };
 
@@ -1011,8 +1011,7 @@ Copyright (c) 2011 by Harvest
 
       option = this.new_option_temp.evaluate(options);
       this.form_field.insert(option);
-      Event.fire(this.form_field, "liszt:updated");
-      return this.result_select();
+      return Event.fire(this.form_field, "liszt:updated");
     };
 
     Chosen.prototype.no_results_clear = function() {

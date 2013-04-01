@@ -512,12 +512,11 @@ class Chosen extends AbstractChosen
     else
       this.select_append_option {value: terms, text: terms}
 
-  select_append_option: ( options ) ->
-    option = $('<option />', options ).attr('selected', 'selected')
+  select_append_option: (options) ->
+    attributes = $.extend({}, options, selected: 1)
+    option = $('<option />', attributes)
     @form_field_jq.append option
     @form_field_jq.trigger "liszt:updated"
-    #@active_field = false
-    @search_field.trigger('focus')
 
   no_results_clear: ->
     @search_results.find(".no-results").remove()
