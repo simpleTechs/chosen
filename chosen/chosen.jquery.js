@@ -385,7 +385,7 @@ Copyright (c) 2011 by Harvest
         container_div.html('<a href="javascript:void(0)" class="chzn-single chzn-default" tabindex="-1"><span>' + this.default_text + '</span><div><b></b></div></a><div class="chzn-drop" style="left:-9000px;"><div class="chzn-search"><input type="text" autocomplete="off" /></div><ul class="chzn-results"></ul></div>');
       }
       this.form_field_jq.hide().after(container_div);
-      this.container = $('#' + this.container_id);
+      this.container = $('#' + this.container_id, container_div.parent());
       this.dropdown = this.container.find('div.chzn-drop').first();
       dd_top = this.container.height();
       dd_width = this.f_width - get_side_border_padding(this.dropdown);
@@ -743,7 +743,7 @@ Copyright (c) 2011 by Harvest
         html = '<li class="search-choice" id="' + choice_id + '"><span>' + item.html + '</span><a href="javascript:void(0)" class="search-choice-close" rel="' + item.array_index + '"></a></li>';
       }
       this.search_container.before(html);
-      link = $('#' + choice_id).find("a").first();
+      link = $('#' + choice_id, this.search_container.parent()).find("a").first();
       return link.click(function(evt) {
         return _this.choice_destroy_link_click(evt);
       });
@@ -979,9 +979,11 @@ Copyright (c) 2011 by Harvest
 
       no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
       no_results_html.find("span").first().html(terms);
-      this.search_results.append(no_results_html);
+
       if (this.create_option) {
-        return this.show_create_option(terms);
+        return this.show_create_option(terms).append(no_results_html);
+      } else {
+        this.search_results.append(no_results_html);
       }
     };
 
